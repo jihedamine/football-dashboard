@@ -23,6 +23,7 @@ public class Dashboard {
         commands.add(new GoalGameCommand());
         commands.add(new EndGameCommand());
         commands.add(new PrintGameCommand());
+        messages = ResourceBundle.getBundle("messages");
     }
 
     public Dashboard(Locale locale) {
