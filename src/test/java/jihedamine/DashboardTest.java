@@ -16,7 +16,7 @@ public class DashboardTest {
 
     @Before
     public void init() {
-        dashboard = new Dashboard(Locale.ENGLISH);
+        dashboard = new Dashboard();
     }
 
     @Test
