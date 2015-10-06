@@ -1,66 +1,66 @@
 package jihedamine;
 
-import jihedamine.command.GameCommandExecutor;
+import jihedamine.gamecommand.GameCommand;
+import jihedamine.gamecommand.commands.EndGameCommand;
+import jihedamine.gamecommand.commands.GoalGameCommand;
+import jihedamine.gamecommand.commands.PrintGameCommand;
+import jihedamine.gamecommand.commands.StartGameCommand;
+
+import java.util.*;
 
 /**
  * Created by jamaaref on 05/10/15.
  */
 public class Dashboard {
-
     private Game game;
-    private GameCommandExecutor commandExecutor;
+    private Set<GameCommand> commands;
+    ResourceBundle messages;
 
     public Dashboard() {
         game = new Game();
-        commandExecutor = new GameCommandExecutor(game);
+        commands = new HashSet<>();
+        commands.add(new StartGameCommand());
+        commands.add(new GoalGameCommand());
+        commands.add(new EndGameCommand());
+        commands.add(new PrintGameCommand());
     }
 
-    public String execute(String command) {
-        return commandExecutor.execute(command);
+    public Dashboard(Locale locale) {
+        this();
+        messages = ResourceBundle.getBundle("messages", locale);
     }
 
-    private static void printTeam(Team team, StringBuffer text) {
-        text.append(team.getName());
-        text.append(" ");
-        text.append(team.getGoals().size());
-        if (team.getGoals().size() > 0) {
-            text.append(" (");
-            for (Goal goal : team.getGoals()) {
-                text.append(goal.getScorerName());
-                text.append(" ");
-                text.append(goal.getMinute());
-                text.append("' ");
+    public String execute(String inputString) {
+        StringBuilder result = new StringBuilder();
+
+        for (GameCommand command : commands) {
+            result.append(command.execute(inputString, game));
+        }
+
+        if (result.length() == 0) {
+            if (game.isInProgress()) {
+                result.append("input-error");
+            } else {
+                result.append("input-error-no-game");
             }
-            // delete last space
-            text.deleteCharAt(text.length() - 1);
-            text.append(")");
+        }
+
+        try {
+            return messages.getString(result.toString());
+        } catch (MissingResourceException e) {
+            return result.toString();
         }
     }
 
     public static void main(String[] args) {
         Dashboard dashboard = new Dashboard();
-        System.out.println(dashboard.execute("Start: 'England' vs. 'West Germany'"));
-        System.out.println(dashboard.print());
-        System.out.println(dashboard.execute("11 'West Germany' Haller"));
-        System.out.println(dashboard.print());
-        System.out.println(dashboard.execute("25 'West Germany' Klinsmann"));
-        System.out.println(dashboard.print());
-        System.out.println(dashboard.execute("33 'England' Shearer"));
-        System.out.println(dashboard.print());
-        System.out.println(dashboard.execute("End"));
+        Scanner console = new Scanner(System.in);
+        String input;
+        do {
+            System.out.print("> ");
+            input = console.nextLine().trim();
+            System.out.println(dashboard.execute(input));
+        } while (!input.equals("End"));
     }
 
-    public String print() {
-        String result;
-        if (game.isInProgress()) {
-            StringBuffer text = new StringBuffer();
-            printTeam(game.getHomeTeam(), text);
-            text.append(" vs. ");
-            printTeam(game.getAwayTeam(), text);
-            result = text.toString();
-        } else {
-            result = "No game currently in progress";
-        }
-        return result;
-    }
 }
