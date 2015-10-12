@@ -81,7 +81,7 @@ public class Dashboard {
         if (args.length > 0) {
             locale = new Locale(args[0]);
         }
-        Dashboard dashboard = new Dashboard();
+        Dashboard dashboard = new Dashboard(locale);
         ResourceBundle messages = ResourceBundle.getBundle("messages", locale);
         Scanner console = new Scanner(System.in);
         String input;
