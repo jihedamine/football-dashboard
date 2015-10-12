@@ -7,7 +7,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by jamaaref on 05/10/15.
+ * Created by Jihed Amine Maaref (jihedamine@gmail.com) on 05/10/15.
+ *
+ * The command ends the game
+ *
+ * Pattern: "End"
  */
 public class EndGameCommand extends AbstractGameCommand {
 

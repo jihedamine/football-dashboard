@@ -1,7 +1,10 @@
 package jihedamine;
 
 /**
- * Created by jamaaref on 05/10/15.
+ * Created by Jihed Amine Maaref (jihedamine@gmail.com) on 05/10/15.
+ *
+ * Represents a football team
+ *
  */
 public class Team {
     private String name;

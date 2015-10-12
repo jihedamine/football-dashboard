@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Created by jamaaref on 05/10/15.
+ * Created by Jihed Amine Maaref (jihedamine@gmail.com) on 05/10/15.
+ *
+ * Represents a football game
+ *
  */
 public class Game {
     private Team homeTeam;
@@ -39,6 +42,12 @@ public class Game {
         return isInProgress;
     }
 
+    /**
+     * Returns the game's team instance
+     * named as the name passed in paramater
+     * @param teamName name of the team
+     * @return a team instance
+     */
     public Team getTeamByName(String teamName) {
         if (teamName.equals(homeTeam.getName())) {
             return homeTeam;
@@ -47,6 +56,10 @@ public class Game {
         } else throw new IllegalArgumentException("team-name-not-found");
     }
 
+    /**
+     * Adds a goal to this game
+     * @param goal goal to add to the game
+     */
     public void addGoal(Goal goal) {
         if (isBackInTimeGoal(goal)) {
             throw new IllegalArgumentException("goal-back-in-time");
@@ -54,12 +67,22 @@ public class Game {
         this.goals.add(goal);
     }
 
+    /**
+     * Asserts if a goal happened before previously added goals to the game
+     * @param goal the goal to evaluate
+     * @return true if the goal happened before previously added goals
+     */
     private boolean isBackInTimeGoal(Goal goal) {
         if (goals.size() == 0) return false;
         // Goals are sorted in chronological order
         return goals.get(goals.size()-1).compareTo(goal) > 0;
     }
 
+    /**
+     * Returns the list of goals scored by the team passed as a parameter
+     * @param team the team that scored the goals
+     * @return list of goals scored by the team in the game
+     */
     public List<Goal> getGoals(Team team) {
         return goals.stream().filter(g -> g.getTeam().equals(team)).collect(Collectors.toList());
     }

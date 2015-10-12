@@ -6,7 +6,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by jamaaref on 05/10/15.
+ * Created by Jihed Amine Maaref (jihedamine@gmail.com) on 05/10/15.
+ *
+ * Implements the pattern matching portion and the isGameStarted method for a GameCommand
  */
 public abstract class AbstractGameCommand implements GameCommand {
     protected Pattern pattern;
@@ -21,6 +23,14 @@ public abstract class AbstractGameCommand implements GameCommand {
         }
     }
 
+    /**
+     * Has to be implemented by every class extending AbstractGameCommand
+     * Defines the command's processing on a game
+     * @param str string matching the command's pattern
+     * @param game game on which the command is executed
+     * @param matcher matcher of the command's pattern
+     * @return result of the command's execution
+     */
     protected abstract String executeMatches(String str, Game game, Matcher matcher);
 
     public boolean isGameStarted(Game game) {
